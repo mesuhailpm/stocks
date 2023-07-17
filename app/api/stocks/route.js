@@ -2,10 +2,9 @@ import connectToDb from "@/utils/connectToDb"
 
 export const GET = async (request) => {
     try {
-        const query = request.nextUrl.searchParams.get('query')
         const db = await connectToDb()
         const stocks = db.collection('stocks')
-        const stocksData = await stocks.find({name:query}).toArray()
+        const stocksData = await stocks.find().toArray()
 
         return new Response(JSON.stringify(stocksData), { status: 200 })
         

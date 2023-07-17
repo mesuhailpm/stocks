@@ -6,15 +6,15 @@ const Stocks = () => {
     const [fetchLoading, setFetchLoading] = useState(true);
 
 
-
     const fetchStockItems = async () => {
-        const response = await fetch(`api/stock`);
+        const response = await fetch(`api/stocks`,{cache:'no-store'});
         const data = await response.json();
         setStockData(data);
         setFetchLoading(false);
       };
 
     useEffect(() => {
+        console.log('useEffect inside stock');//test
         fetchStockItems()
     }
         ,[])
