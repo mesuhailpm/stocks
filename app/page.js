@@ -8,14 +8,14 @@ export default function Home() {
   const [fetchLoading, setFetchLoading] = useState();
   const [stockData, setStockData] = useState([])
 
-  const fetchStockItems = async () => {
-    const response = await fetch(`api/stock`);
-    const data = await response.json();
-    setStockData(data);
-  };
+  // const fetchStockItems = async () => {
+  //   const response = await fetch(`api/stock`,{cache:'no-store'});
+  //   const data = await response.json();
+  //   setStockData(data);
+  // };
   const fetchStockItemsBySearch = async (keyword) => {
     setFetchLoading(true);
-    const response = await fetch(`api/stock?query=${keyword}`);
+    const response = await fetch(`api/stock?query=${keyword}`,{cache:'no-store'});
     const data = await response.json();
     setStockData(data);
     setFetchLoading(false);
@@ -23,10 +23,13 @@ export default function Home() {
 
   const handleTypeSearch = (e) => {
     setSearchValue(e.target.value);
-    fetchStockItems(e.target.value);
+    fetchStockItemsBySearch(e.target.value);
   };
 
-  
+  // useEffect(() => { 
+  //   console.log('useEffect');//test
+  //   fetchStockItems()
+  // },[])
 
   return (
     <>
@@ -39,6 +42,23 @@ export default function Home() {
             onChange={handleTypeSearch}
             className="w-full border border-purple-500 rounded-sm px-2 bg-gray-300 text-sm text-black capitalize shadow-lg"
             />
+              {stockData &&
+              <div className='dropdown-list flex flex-col'>
+                {stockData.map((item, index) =>(
+                  <div key={index} className="flex justify-between">
+                    <p>{item.name}</p>
+                    <div className="flex">
+                      <p>-</p>
+                      <p>{item.quantity}</p>
+                      <p>+</p>
+                    </div>
+
+
+                  </div>
+                ))}
+              
+
+            </div>}
         </section>
           
       </main>
